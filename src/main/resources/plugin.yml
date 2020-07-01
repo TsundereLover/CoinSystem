@@ -1,0 +1,11 @@
+author: TsundereLover
+version: 1.0
+name: CoinSystem
+main: net.bausucht.tsunderelover.coinsystem.CoinSystem
+
+commands:
+  coins:
+  addcoins:
+  removecoins:
+  setcoins:
+  pay:
