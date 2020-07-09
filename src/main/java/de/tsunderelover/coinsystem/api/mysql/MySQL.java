@@ -177,7 +177,7 @@ public class MySQL {
         }, getExecutorService());
     }
 
-    public boolean isRegistered(Player player) throws ExecutionException, InterruptedException {
+    public synchronized boolean isRegistered(Player player) throws ExecutionException, InterruptedException {
         return CompletableFuture.supplyAsync( () -> {
             try (PreparedStatement preparedStatement = getConnection().prepareStatement("SELECT * FROM " + getDatabase() + " WHERE UUID = " + '"' + player.getUniqueId().toString() + '"')) {
                 try (ResultSet resultSet = preparedStatement.executeQuery()) {
