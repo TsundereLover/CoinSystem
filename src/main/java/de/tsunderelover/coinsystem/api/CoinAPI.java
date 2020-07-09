@@ -1,6 +1,6 @@
-package net.bausucht.tsunderelover.coinsystem.api;
+package de.tsunderelover.coinsystem.api;
 
-import net.bausucht.tsunderelover.coinsystem.api.mysql.MySQL;
+import de.tsunderelover.coinsystem.api.mysql.MySQL;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 

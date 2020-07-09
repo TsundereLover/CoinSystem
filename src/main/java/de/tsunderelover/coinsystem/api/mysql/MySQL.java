@@ -1,12 +1,12 @@
-package net.bausucht.tsunderelover.coinsystem.api.mysql;
+package de.tsunderelover.coinsystem.api.mysql;
 
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.bausucht.tsunderelover.coinsystem.api.events.PlayerCoinsChangeEvent;
-import net.bausucht.tsunderelover.coinsystem.api.events.PlayerPayPlayerEvent;
+import de.tsunderelover.coinsystem.api.events.PlayerCoinsChangeEvent;
+import de.tsunderelover.coinsystem.api.events.PlayerPayPlayerEvent;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -84,10 +84,6 @@ public class MySQL {
         }, getExecutorService()).handle((aVoid, throwable) -> throwable);
     }
 
-    public boolean isConnected() throws SQLException {
-        return getConnection() != null;
-    }
-
     public void registerPlayer(Player player, int coins) throws ExecutionException, InterruptedException {
         if (!isRegistered(player)) {
             update("INSERT INTO " + getDatabase() + " (PLAYERNAME, UUID, COINS) VALUES(" + '"' + player.getName() + '"' + ", " + '"' + player.getUniqueId().toString() + '"' + ", " + coins + ")");
@@ -111,9 +107,9 @@ public class MySQL {
         CompletableFuture.runAsync( () -> {
             try {
                 if (isRegistered(player)) {
-                    if (amount <= 2147483647) {
+                    if (amount <= Integer.MAX_VALUE) {
                         update("UPDATE " + getDatabase() + " SET COINS = " + amount + " WHERE UUID = " + '"' + player.getUniqueId().toString() + '"');
-                        Bukkit.getPluginManager().callEvent(new PlayerCoinsChangeEvent(true, player, amount));
+                        Bukkit.getPluginManager().callEvent(new PlayerCoinsChangeEvent(player, amount));
                         this.coinCache.put(player.getUniqueId(), amount);
 
                     } else {
@@ -131,9 +127,9 @@ public class MySQL {
             try {
                 if (isRegistered(player)) {
                     int newAmount = getCoins(player) + amount;
-                    if (newAmount <= 2147483647) {
+                    if (newAmount <= Integer.MAX_VALUE) {
                         update("UPDATE " + getDatabase() + " SET COINS = " + newAmount + " WHERE UUID = " + '"' + player.getUniqueId().toString() + '"');
-                        Bukkit.getPluginManager().callEvent(new PlayerCoinsChangeEvent(true, player, amount));
+                        Bukkit.getPluginManager().callEvent(new PlayerCoinsChangeEvent(player, amount));
                         this.coinCache.put(player.getUniqueId(), newAmount);
 
                     } else {
@@ -153,7 +149,7 @@ public class MySQL {
                     int newAmount = getCoins(player) - amount;
                     if (newAmount >= 0) {
                         update("UPDATE " + getDatabase() + " SET COINS = " + newAmount + " WHERE UUID = " + '"' + player.getUniqueId().toString() + '"');
-                        Bukkit.getPluginManager().callEvent(new PlayerCoinsChangeEvent(true, player, amount));
+                        Bukkit.getPluginManager().callEvent(new PlayerCoinsChangeEvent(player, amount));
                         this.coinCache.put(player.getUniqueId(), newAmount);
 
                     } else {
@@ -172,7 +168,7 @@ public class MySQL {
                 if (isRegistered(payer) && isRegistered(paid)) {
                     removeCoins(payer, amount);
                     addCoins(paid, amount);
-                    Bukkit.getPluginManager().callEvent(new PlayerPayPlayerEvent(true, payer, paid, amount));
+                    Bukkit.getPluginManager().callEvent(new PlayerPayPlayerEvent(payer, paid, amount));
                 }
             } catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
@@ -193,6 +189,10 @@ public class MySQL {
 
             return false;
         }, getExecutorService()).get();
+    }
+
+    public boolean isConnected() throws SQLException {
+        return getConnection() != null;
     }
 
     private void loadMySQLConfig() {

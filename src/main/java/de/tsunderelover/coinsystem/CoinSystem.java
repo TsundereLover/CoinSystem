@@ -1,10 +1,10 @@
-package net.bausucht.tsunderelover.coinsystem;
+package de.tsunderelover.coinsystem;
 
-import net.bausucht.tsunderelover.coinsystem.api.CoinAPI;
-import net.bausucht.tsunderelover.coinsystem.commands.*;
-import net.bausucht.tsunderelover.coinsystem.listeners.PlayerCoinsChangeListener;
-import net.bausucht.tsunderelover.coinsystem.listeners.PlayerJoinListener;
-import net.bausucht.tsunderelover.coinsystem.listeners.PlayerPayPlayerListener;
+import de.tsunderelover.coinsystem.api.CoinAPI;
+import de.tsunderelover.coinsystem.commands.*;
+import de.tsunderelover.coinsystem.listeners.PlayerCoinsChangeListener;
+import de.tsunderelover.coinsystem.listeners.PlayerJoinListener;
+import de.tsunderelover.coinsystem.listeners.PlayerPayPlayerListener;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;

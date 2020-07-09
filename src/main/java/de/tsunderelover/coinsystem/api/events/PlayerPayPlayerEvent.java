@@ -1,19 +1,23 @@
-package net.bausucht.tsunderelover.coinsystem.api.events;
+package de.tsunderelover.coinsystem.api.events;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PlayerCoinsChangeEvent extends Event {
+public class PlayerPayPlayerEvent extends Event {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    private final Player player;
+    private final Player payer;
+
+    private final Player paid;
 
     private final int amount;
 
-    public PlayerCoinsChangeEvent(boolean isAsync, Player player, int amount) {
-        this.player = player;
+    public PlayerPayPlayerEvent(Player payer, Player paid, int amount) {
+        super(true);
+        this.payer = payer;
+        this.paid = paid;
         this.amount = amount;
     }
 
@@ -25,8 +29,12 @@ public class PlayerCoinsChangeEvent extends Event {
         return HANDLER_LIST;
     }
 
-    public Player getPlayer() {
-        return player;
+    public Player getPayer() {
+        return payer;
+    }
+
+    public Player getPaid() {
+        return paid;
     }
 
     public int getAmount() {

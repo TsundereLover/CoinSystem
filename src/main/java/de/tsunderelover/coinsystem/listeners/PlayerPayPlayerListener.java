@@ -1,6 +1,6 @@
-package net.bausucht.tsunderelover.coinsystem.listeners;
+package de.tsunderelover.coinsystem.listeners;
 
-import net.bausucht.tsunderelover.coinsystem.api.events.PlayerPayPlayerEvent;
+import de.tsunderelover.coinsystem.api.events.PlayerPayPlayerEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
